@@ -9,7 +9,7 @@ On 19th of March 2017, project has been moved at Github.
 LGPL 3.0
 
 ## Keyword documentation
-[JmeterLib.html](https://kowalpy.github.io/Robot-Framework-JMeter-Library/FtpLibrary.html)
+[JMeterLib.html](https://kowalpy.github.io/Robot-Framework-JMeter-Library/JMeterLib.html)
 
 ## Version history
 Version 1.1 released on 25st of September 2015. What's new in 1.1:
