@@ -241,7 +241,7 @@ class JMeterRunner(object):
         self.paramsStr = otherParams
         self.validateInput()
         self.listOtherParams()
-        print self
+        print(self)
         jmeterOutput = self.runAndPrintResult()
 
     def __str__(self):
@@ -270,11 +270,11 @@ class JMeterRunner(object):
         if len(self.params) > 0:
             for p in self.params:
                 runList.append(p)
-        print "subprocess.call input list: " + str(runList)
+        print("subprocess.call input list: " + str(runList))
         retValue = subprocess.call(runList)
         msg = "Value returned by JMeter:"
         if retValue == 0:
-            print "%s %s" % (msg, retValue)
+            print("%s %s" % (msg, retValue))
         else:
             raise JMeterLibException("%s %s" % (msg, retValue))
 
@@ -293,12 +293,12 @@ class LogAnalysisInitiator(object):
         self.analyserObject = self.initiateNewAnalyserObject()
         self.aggrSummary, self.aggrSamples, self.samples = self.analyserObject.analyzeLog()
         if debugNeeded:
-            print "aggrSummary"
-            print self.aggrSummary
-            print "aggrSamples"
-            print self.aggrSamples
-            print "samples"
-            print self.samples
+            print("aggrSummary")
+            print(self.aggrSummary)
+            print("aggrSamples")
+            print(self.aggrSamples)
+            print("samples")
+            print(self.samples)
         if createHtmlReport:
             self.convertLogToHtml(disableReports)
         if createSqlReport:
@@ -319,7 +319,7 @@ class LogAnalysisInitiator(object):
     def initiateNewAnalyserObject(self):
         newObject = None
         newFileLines = []
-        print "Opening log file " + self.jtlPath
+        print("Opening log file " + self.jtlPath)
         try:
             logFileHandler = open(self.jtlPath, 'r')
             newFileLines = logFileHandler.readlines()
@@ -329,10 +329,10 @@ class LogAnalysisInitiator(object):
         else:
             if self.recognizeFormat(newFileLines) == "csv":
                 newObject = CsvLogAnalyser(self.jtlPath)
-                print "Log file format: csv"
+                print("Log file format: csv")
             elif self.recognizeFormat(newFileLines) == "xml":
                 newObject = XmlLogAnalyser(self.jtlPath)
-                print "Log file format: xml"
+                print("Log file format: xml")
             else:
                 raise JMeterLibException("Incorrect log file format")
         return newObject
@@ -368,10 +368,10 @@ class LogAnalyser(object):
 
     def printSamples(self):
         for s in self.samples:
-            print s
+            print(s)
 
     def calculate(self):
-        print "Calculating statistical values"
+        print("Calculating statistical values")
         self.aggrSummary = AggregatedSummary()
         self.aggrSamples = []
         self.totalSamples = AggregatedSamples("TOTAL")
@@ -459,7 +459,7 @@ class LogAnalyser(object):
 
 class CsvLogAnalyser(LogAnalyser):
     def getSamples(self):
-        print "Extracting samples and assertions from " + self.filePath
+        print("Extracting samples and assertions from " + self.filePath)
         self.samples = []
         try:
             with open(self.filePath, "r") as csvfile:
@@ -477,7 +477,7 @@ class CsvLogAnalyser(LogAnalyser):
                     if type(newSample) == Sample or type(newSample) == Sample2:
                         self.samples.append(newSample)
         except IOError:
-            print "ERROR, problems while reading " + str(self.filePath)
+            print("ERROR, problems while reading " + str(self.filePath))
         if len(self.samples) <= 0:
             raise JMeterLibException("No samples were found in a log file.")
 
@@ -494,14 +494,14 @@ class CsvLogAnalyser(LogAnalyser):
 
 class XmlLogAnalyser(LogAnalyser):
     def getSamples(self):
-        print "Extracting samples and assertions from " + self.filePath
+        print("Extracting samples and assertions from " + self.filePath)
         self.samples = []
         try:
             xmlLog = xml.dom.minidom.parse(self.filePath)
         except IOError:
-            print "ERROR, problems while reading " + str(self.filePath)
+            print("ERROR, problems while reading " + str(self.filePath))
         except xml.parsers.expat.ExpatError:
-            print "ERROR, problems while parsing xml"
+            print("ERROR, problems while parsing xml")
         else:
             testResultNodes = xmlLog.getElementsByTagName("testResults")
             if len(testResultNodes) > 0:
@@ -1001,15 +1001,15 @@ class LogConverterSql(object):
         self.readDbInTheEnd = False
         try:
             if dbReady:
-                print "Accessing SQLite DB file " + self.dbName
+                print("Accessing SQLite DB file " + self.dbName)
             else:
-                print "Creating SQLite DB file " + self.dbName
+                print("Creating SQLite DB file " + self.dbName)
             self.db = sqlite3.connect(self.dbName)
         except sqlite3.Error:
             if dbReady:
-                print "ERROR while accessing " + self.dbName
+                print("ERROR while accessing " + self.dbName)
             else:
-                print "ERROR while creating " + self.dbName
+                print("ERROR while creating " + self.dbName)
             self.dbStatus = False
         if not dbReady:
             self.createStructure2()
@@ -1038,14 +1038,14 @@ class LogConverterSql(object):
                 sqlSchema = sqlSchemaFile.read()
                 sqlSchemaFile.close()
             except:
-                print "ERROR, problems while reading " + sqlSchemaFilePath
+                print("ERROR, problems while reading " + sqlSchemaFilePath)
                 self.dbStatus = False
             if sqlSchema!="" :
                 try:
                    dbCursor = self.db.cursor()
                    dbCursor.executescript(sqlSchema)
                 except sqlite3.Error:
-                   print "ERROR while creating db schema"
+                   print("ERROR while creating db schema")
                    self.dbStatus = False
 
     def createStructure2(self):
@@ -1056,7 +1056,7 @@ class LogConverterSql(object):
                    dbCursor = self.db.cursor()
                    dbCursor.executescript(sqlSchema)
                 except sqlite3.Error:
-                   print "ERROR while creating db schema"
+                   print("ERROR while creating db schema")
                    self.dbStatus = False
 
     @classmethod
@@ -1091,7 +1091,7 @@ CREATE TABLE Assert(assertId INTEGER PRIMARY KEY autoincrement, sampleId INTEGER
                     dbCursor = self.db.cursor()
                     dbCursor.executescript(sqlCommand)
                 except sqlite3.Error:
-                    print "ERROR while executing \"INSERT INTO Testrun\" command"
+                    print("ERROR while executing \"INSERT INTO Testrun\" command")
                     self.dbStatus = False
             sqlSelect = "SELECT testId FROM Testrun WHERE runTime=\'" + self.loganalyser.timeStamp
             #sqlSelect += "\' AND logFile=\'" + self.loganalyser.filePath + "\';"
@@ -1109,7 +1109,7 @@ CREATE TABLE Assert(assertId INTEGER PRIMARY KEY autoincrement, sampleId INTEGER
                 if type(selectTuple)==tuple and len(selectTuple)>=1:
                     foundId = selectTuple[0]
             except sqlite3.Error:
-                print errMsg
+                print(errMsg)
                 self.dbStatus = False
         return foundId
 
@@ -1139,7 +1139,7 @@ CREATE TABLE Assert(assertId INTEGER PRIMARY KEY autoincrement, sampleId INTEGER
                         dbCursor = self.db.cursor()
                         dbCursor.executescript(sqlCommand)
                     except sqlite3.Error:
-                        print "ERROR while executing \"INSERT INTO Aggregated\" command"
+                        print("ERROR while executing \"INSERT INTO Aggregated\" command")
                         self.dbStatus = False
                     sqlSelect = "SELECT aggId FROM Aggregated WHERE testId=" + str(testrunKey)
                     sqlSelect += " AND label=\'" + agg.sampleName + "\';"
@@ -1171,7 +1171,7 @@ CREATE TABLE Assert(assertId INTEGER PRIMARY KEY autoincrement, sampleId INTEGER
                             dbCursor = self.db.cursor()
                             dbCursor.executescript(sqlCommand)
                         except sqlite3.Error:
-                            print "ERROR while executing \"INSERT INTO Sample\" command"
+                            print("ERROR while executing \"INSERT INTO Sample\" command")
                             self.dbStatus = False
                         sqlSelect = "SELECT sampleId FROM Sample ORDER BY sampleId DESC"
                         sampleId = self.getIdFromSelect(sqlSelect,"Error while executing \"SELECT ... FROM Sample\" command")
@@ -1192,7 +1192,7 @@ CREATE TABLE Assert(assertId INTEGER PRIMARY KEY autoincrement, sampleId INTEGER
                             dbCursor = self.db.cursor()
                             dbCursor.executescript(sqlCommand)
                         except sqlite3.Error:
-                            print "ERROR while executing \"INSERT INTO Assert\" command"
+                            print("ERROR while executing \"INSERT INTO Assert\" command")
                             self.dbStatus = False
 
     def testDb(self):
@@ -1209,7 +1209,7 @@ CREATE TABLE Assert(assertId INTEGER PRIMARY KEY autoincrement, sampleId INTEGER
                     dbLogFile.write(sqlLog)
                     dbLogFile.close()
                 except IOError:
-                    print "ERROR while saving data to a log file"
+                    print("ERROR while saving data to a log file")
 
     def selectFrom(self, fromWhat):
         sqlCommand = "SELECT * FROM " + fromWhat + ";\n"
@@ -1223,7 +1223,7 @@ CREATE TABLE Assert(assertId INTEGER PRIMARY KEY autoincrement, sampleId INTEGER
                 sqlData += "\n"
             sqlData += "\n"
         except sqlite3.Error:
-            print "ERROR while executing command " + sqlCommand
+            print("ERROR while executing command " + sqlCommand)
         return sqlData
 
 class LogConverterHtml(object):
@@ -1246,7 +1246,7 @@ class LogConverterHtml(object):
             htmlHndl.write(data)
             htmlHndl.close()
         except IOError:
-            print "ERROR, problems while writing " + str(self.htmlLogPath)
+            print("ERROR, problems while writing " + str(self.htmlLogPath))
 
     def createHtml(self, disableReports):
         tableOfSamples = self.loganalyser.samples
@@ -1254,7 +1254,7 @@ class LogConverterHtml(object):
             disableReports = int(disableReports)
         if not isinstance(disableReports, int):
             disableReports = 0
-        print "Creating html " + self.htmlLogPath
+        print("Creating html " + self.htmlLogPath)
         newHtml = self.createHtmlBeginning()
         newHtml += self.createHtmlNaviPanel()
         newHtml += self.createHtmlInfo()
@@ -1286,7 +1286,7 @@ class LogConverterHtml(object):
         htmlInfo = self.htmlParts['belowmenudiv']
         htmlInfo += "<p>File <i>" + self.logPath + "</i> parsed and converted by "
         htmlInfo += "<a href=http://robotframework.org target=_blank>Robot Framework</a> "
-        htmlInfo += "<a href=http://sourceforge.net/projects/rf-jmeter-py/ target=_blank>JMeter library </a> on "
+        htmlInfo += "<a href=https://github.com/kowalpy/Robot-Framework-JMeter-Library target=_blank>JMeter library </a> on "
         htmlInfo += self.loganalyser.timeStamp + ".</p>"
         htmlInfo += self.htmlParts['infoTableStartAndHeader']
         htmlInfo += "<tr><td>" + str(self.loganalyser.aggrSummary.getAmountOfSamples()) + "</td>"
@@ -1416,7 +1416,7 @@ class LogConverterHtml(object):
         for s in tableOfSamples:
             sampleNumber += 1
             if self.printDetails:
-                print "     Writing sample number " + str(sampleNumber) + " into " + self.htmlLogPath
+                print("     Writing sample number " + str(sampleNumber) + " into " + self.htmlLogPath)
             samplesHtml += "<tr"
             if whichRow == 1:
                 samplesHtml += " class=\"even\" "
@@ -1967,6 +1967,6 @@ if __name__ == '__main__':
     mainMsg = "robotframework-jmeterlib is a Robot Framework library " \
               "for starting JMeter and parsing JMeter logs. For " \
               "instruction on how to use please visit" \
-              " http://sourceforge.net/projects/rf-jmeter-py/"
-    print mainMsg
+              " https://github.com/kowalpy/Robot-Framework-JMeter-Library"
+    print(mainMsg)
     #analyseJtlConvert("D:\\robotframework-jmeterlib\\robotframework-jmeterlib\\jmeterTest10Thread100Loop_xml.jtl")
