@@ -65,6 +65,14 @@ class JMeterLib(JMeterClasses.JMeterKeywords):
     def __init__(self):
         pass
 
+class JMeter2Lib(JMeterClasses.JMeterKeywords):
+    def __init__(self):
+        pass
+
+class JMeter3Lib(JMeterClasses.JMeterKeywords):
+    def __init__(self):
+        pass
+
 if __name__ == '__main__':
     mainMsg = "robotframework-jmeterlib is a Robot Framework library " \
               "for starting JMeter and parsing JMeter logs. For " \

@@ -1,5 +1,7 @@
 *** Settings ***
-Library           JMeterLib.py
+Library           JMeterLib    WITH NAME    jmeterlib_legacy    # Identical import as in case of 1.1. Import the same as JMeter2Lib.
+Library           JMeterLib.JMeter2Lib    WITH NAME    jmeter2lib    # Supports old style JMeter logs (ver < 3.0). The same as legacy (library version 1.1).
+Library           JMeterLib.JMeter3Lib    WITH NAME    jmeter3lib    # Supports new style JMeter logs (ver >= 3.0).
 Library           Collections
 
 *** Variables ***
@@ -10,18 +12,18 @@ ${JMeter_log02_path}    JMeter_test_files/jmeterTest1Thread1Loop_log02.jtl
 
 *** Test Cases ***
 tc1_justRunJMeter
-    run jmeter    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log01_path}
+    jmeterlib_legacy.run jmeter    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log01_path}
 
 tc2_analyseAndConvertExistingJtlLog
     Comment    ${result}    analyse Jtl convert    D:/robotframework-jmeterlib/robotframework-jmeterlib/jmeterTest1Thread1Loop_csv.jtl
-    ${result}    analyse Jtl convert    ${JMeter_log01_path}
+    ${result}    jmeterlib_legacy.analyse Jtl convert    ${JMeter_log01_path}
     log    ${result}
     : FOR    ${ELEMENT}    IN    @{result}
     \    log dictionary    ${ELEMENT}
 
 tc3_runJMeterAndAnalyseAndConvertLog
     Comment    ${result}    run jmeter analyse jtl convert    ${JMeter_path}    D:/robotframework-jmeterlib/1.0/log/output_tc3.jtl
-    ${result}    run jmeter analyse jtl convert    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log02_path}
+    ${result}    jmeterlib_legacy.run jmeter analyse jtl convert    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log02_path}
     log    ${result}
     : FOR    ${ELEMENT}    IN    @{result}
     \    log dictionary    ${ELEMENT}
