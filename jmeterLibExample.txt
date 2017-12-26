@@ -2,18 +2,26 @@
 Library           JMeterLib.py
 Library           Collections
 
+*** Variables ***
+${JMeter_path}    D:/programy/apache-jmeter-2.12/bin/jmeter.bat
+${JMeter_script_1thread1loop_path}    JMeter_test_files/jmeterTest1Thread1Loop.jmx
+${JMeter_log01_path}    JMeter_test_files/jmeterTest1Thread1Loop_log01.jtl
+${JMeter_log02_path}    JMeter_test_files/jmeterTest1Thread1Loop_log02.jtl
+
 *** Test Cases ***
 tc1_justRunJMeter
-    run jmeter    D:/programy/apache-jmeter-2.12/bin/jmeter.bat    D:/robotframework-jmeterlib/robotframework-jmeterlib/jmeterTest1Thread1Loop.jmx    D:/robotframework-jmeterlib/1.0/log/output_tc1.jtl
+    run jmeter    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log01_path}
 
 tc2_analyseAndConvertExistingJtlLog
-    ${result}    analyse Jtl convert    D:/robotframework-jmeterlib/robotframework-jmeterlib/jmeterTest1Thread1Loop_csv.jtl
+    Comment    ${result}    analyse Jtl convert    D:/robotframework-jmeterlib/robotframework-jmeterlib/jmeterTest1Thread1Loop_csv.jtl
+    ${result}    analyse Jtl convert    ${JMeter_log01_path}
     log    ${result}
     : FOR    ${ELEMENT}    IN    @{result}
     \    log dictionary    ${ELEMENT}
 
 tc3_runJMeterAndAnalyseAndConvertLog
-    ${result}    run jmeter analyse jtl convert    D:/programy/apache-jmeter-2.12/bin/jmeter.bat    D:/robotframework-jmeterlib/robotframework-jmeterlib/jmeterTest1Thread1Loop.jmx    D:/robotframework-jmeterlib/1.0/log/output_tc3.jtl
+    Comment    ${result}    run jmeter analyse jtl convert    ${JMeter_path}    D:/robotframework-jmeterlib/1.0/log/output_tc3.jtl
+    ${result}    run jmeter analyse jtl convert    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log02_path}
     log    ${result}
-    :FOR    ${ELEMENT}    IN    @{result}
+    : FOR    ${ELEMENT}    IN    @{result}
     \    log dictionary    ${ELEMENT}
