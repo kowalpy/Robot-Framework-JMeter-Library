@@ -5,25 +5,58 @@ Library           JMeterLib.JMeter3Lib    WITH NAME    jmeter3lib    # Supports 
 Library           Collections
 
 *** Variables ***
-${JMeter_path}    D:/programy/apache-jmeter-2.12/bin/jmeter.bat
+${JMeter2_path}    D:/programy/apache-jmeter-2.12/bin/jmeter.bat
+${JMeter3_path}    D:/programy/apache-jmeter-3.3/bin/jmeter.bat
 ${JMeter_script_1thread1loop_path}    JMeter_test_files/jmeterTest1Thread1Loop.jmx
 ${JMeter_log01_path}    JMeter_test_files/jmeterTest1Thread1Loop_log01.jtl
 ${JMeter_log02_path}    JMeter_test_files/jmeterTest1Thread1Loop_log02.jtl
+${JMeter_log03_path}    JMeter_test_files/jmeterTest1Thread1Loop_log03.jtl
+${JMeter_log04_path}    JMeter_test_files/jmeterTest1Thread1Loop_log04.jtl
+${JMeter_log05_path}    JMeter_test_files/jmeterTest1Thread1Loop_log05.jtl
+${JMeter_log06_path}    JMeter_test_files/jmeterTest1Thread1Loop_log06.jtl
 
 *** Test Cases ***
-tc1_justRunJMeter
-    jmeterlib_legacy.run jmeter    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log01_path}
+legacy_tc1_justRunJMeter
+    jmeterlib_legacy.run jmeter    ${JMeter2_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log01_path}
 
-tc2_analyseAndConvertExistingJtlLog
-    Comment    ${result}    analyse Jtl convert    D:/robotframework-jmeterlib/robotframework-jmeterlib/jmeterTest1Thread1Loop_csv.jtl
+legacy_tc2_analyseAndConvertExistingJtlLog
     ${result}    jmeterlib_legacy.analyse Jtl convert    ${JMeter_log01_path}
     log    ${result}
     : FOR    ${ELEMENT}    IN    @{result}
     \    log dictionary    ${ELEMENT}
 
-tc3_runJMeterAndAnalyseAndConvertLog
-    Comment    ${result}    run jmeter analyse jtl convert    ${JMeter_path}    D:/robotframework-jmeterlib/1.0/log/output_tc3.jtl
-    ${result}    jmeterlib_legacy.run jmeter analyse jtl convert    ${JMeter_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log02_path}
+legacy_tc3_runJMeterAndAnalyseAndConvertLog
+    ${result}    jmeterlib_legacy.run jmeter analyse jtl convert    ${JMeter2_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log02_path}
+    log    ${result}
+    : FOR    ${ELEMENT}    IN    @{result}
+    \    log dictionary    ${ELEMENT}
+
+jmeter2_tc1_justRunJMeter
+    jmeter2lib.run jmeter    ${JMeter2_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log03_path}
+
+jmeter2_tc2_analyseAndConvertExistingJtlLog
+    ${result}    jmeter2lib.analyse Jtl convert    ${JMeter_log03_path}
+    log    ${result}
+    : FOR    ${ELEMENT}    IN    @{result}
+    \    log dictionary    ${ELEMENT}
+
+jmeter2_tc3_runJMeterAndAnalyseAndConvertLog
+    ${result}    jmeter2lib.run jmeter analyse jtl convert    ${JMeter2_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log04_path}
+    log    ${result}
+    : FOR    ${ELEMENT}    IN    @{result}
+    \    log dictionary    ${ELEMENT}
+
+jmeter3_tc1_justRunJMeter
+    jmeter3lib.run jmeter    ${JMeter3_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log05_path}
+
+jmeter3_tc2_analyseAndConvertExistingJtlLog
+    ${result}    jmeter3lib.analyse Jtl convert    ${JMeter_log05_path}
+    log    ${result}
+    : FOR    ${ELEMENT}    IN    @{result}
+    \    log dictionary    ${ELEMENT}
+
+jmeter3_tc3_runJMeterAndAnalyseAndConvertLog
+    ${result}    jmeter3lib.run jmeter analyse jtl convert    ${JMeter3_path}    ${JMeter_script_1thread1loop_path}    ${JMeter_log06_path}
     log    ${result}
     : FOR    ${ELEMENT}    IN    @{result}
     \    log dictionary    ${ELEMENT}
