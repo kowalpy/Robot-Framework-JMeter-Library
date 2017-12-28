@@ -269,6 +269,9 @@ class LogAnalysisInitiator(object):
             #if re.search("\d+,\d+,[^,]+,\d+,\w+,[^,]+,\w+,\w+,\d+,\d+", fileLines[0]):
             if re.search("\d+,\d+,.*", fileLines[0]):
                 logFileFormat = "csv"
+            if re.search("timeStamp,elapsed,label", fileLines[0]):
+                if re.search("\d+,\d+,.*", fileLines[1]):
+                    logFileFormat = "csv"
         return logFileFormat
 
     def initiateNewAnalyserObject(self):
@@ -419,9 +422,22 @@ class CsvLogAnalyser(LogAnalyser):
         try:
             with open(self.filePath, "r") as csvfile:
                 csvReader = csv.reader(csvfile, delimiter=",", quoting=csv.QUOTE_ALL, quotechar="\"")
+                header_found = False
+                counter = 0
                 for row in csvReader:
                     newSample = None
-                    if len(row) == 10 and self.validateCsvSampleAttributes(row):
+                    if counter==0:
+                        try:
+                            if row[0].find('timeStamp') == 0 and row[1].find('elapsed') == 0 and row[0].find('timeStamp') == 0:
+                                header_found = True
+                        except Exception as e:
+                            pass
+                    if header_found:
+                        if counter >= 1:
+                            newSample = Sample(ts=row[0], t=row[1], lb=row[2], rc=row[3],
+                                               rm=row[4], tn=row[5], dt=row[6], s=row[7],
+                                               by=row[9], lt=row[13])
+                    elif len(row) == 10 and self.validateCsvSampleAttributes(row):
                         newSample = Sample(ts=row[0], t=row[1], lb=row[2], rc=row[3],
                                            rm=row[4], tn=row[5], dt=row[6], s=row[7],
                                            by=row[8], lt=row[9])
@@ -431,6 +447,7 @@ class CsvLogAnalyser(LogAnalyser):
                                            by=row[8], lt=row[9], ng=row[10], na=row[11])
                     if type(newSample) == Sample or type(newSample) == Sample2:
                         self.samples.append(newSample)
+                    counter += 1
         except IOError:
             print("ERROR, problems while reading " + str(self.filePath))
         if len(self.samples) <= 0:
