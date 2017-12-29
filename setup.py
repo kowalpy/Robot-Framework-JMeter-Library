@@ -20,7 +20,7 @@ To install Robot Framework JMeter Library execute command:
 from distutils.core import setup
 
 setup(name='robotframework-jmeterlibrary',
-      version='2.0',
+      version='1.2',
       description='Robot Framework JMeter Library',
       author='Marcin Kowalczyk',
       author_email='mkov80@gmail.com',

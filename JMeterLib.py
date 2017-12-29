@@ -13,22 +13,29 @@
 #You should have received a copy of the GNU Lesser General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
+#to generate libdoc documentation run:
+#   python -m robot.libdoc JMeterLib JMeterLib.html
+
+import JMeterClasses
+
+class JMeterLib(JMeterClasses.JMeterKeywords):
+    """
 This library provides simple way to integrate Robot Framework and JMeter. JTL output
 files can be analysed and converted to HTML, Python dictionary or SQLite format.
 
-Version 1.1 released on 25st of September 2015.
+Version 1.2 released on 29th of December 2017.
 
 What's new:
 
-    Implementation of change request http://sourceforge.net/p/rf-jmeter-py/tickets/2/:
-    " As a End User I want to have option to create smaller reports"
+- adapted to new csv log format
 
 Following software versions were used during development:
-- robotframework-2.8.7
-- robotframework-ride-2.7.5
-- JMeter 2.12
-- python-2.7.5
+- Python-2.7.14
+- robotframework-3.0.2
+- robotframework-ride-1.5.2.1
+- jmeter 2.12
+- jmeter 3.3
+
 
 Author: Marcin Kowalczyk
 
@@ -39,10 +46,6 @@ Installation:
 
 OR
 - download, unzip and run command: python setup.py install
-
-OR
-- download, unzip and copy JMeterLib.py file to a directory pointed by
-    PYTHONPATH (for example ...\Python27\lib\site-packages).
 
 Example for running JMeter and parsing results in single keyword:
  | run jmeter analyse jtl convert | D:/apache-jmeter-2.12/bin/jmeter.bat | D:/Tests/Test1Thread1Loop.jmx | D:/Tests/output1.jtl |
@@ -59,9 +62,6 @@ Example for reading parsed contents:
 |  | log dictionary	| ${ELEMENT} |  |
 """
 
-import JMeterClasses
-
-class JMeterLib(JMeterClasses.JMeterKeywords):
     def __init__(self):
         pass
 
@@ -71,4 +71,3 @@ if __name__ == '__main__':
               "instruction on how to use please visit" \
               " https://github.com/kowalpy/Robot-Framework-JMeter-Library"
     print(mainMsg)
-    #analyseJtlConvert("D:\\robotframework-jmeterlib\\robotframework-jmeterlib\\jmeterTest10Thread100Loop_xml.jtl")

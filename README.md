@@ -23,15 +23,15 @@ Following software versions were used during development:
 - JMeter 2.12
 - python-2.7.5
 
+Version 1.2 released on 29th of December 2017. What's new in 1.2:
+
+- adapted to new csv log format
+
 ## Installation:
 - run command: pip install robotframework-jmeterlibrary
 
 OR
 - download, unzip and run command: python setup.py install
-
-OR
-- download, unzip and copy JMeterLib.py file to a directory pointed by
-    PYTHONPATH (for example ...\Python27\lib\site-packages).
 
 ## Usage:
 
