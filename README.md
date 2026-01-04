@@ -1,7 +1,9 @@
 # Robot Framework JMeter Library
 
-This library provides simple way to integrate Robot Framework and JMeter. JTL output
-files can be analysed and converted to HTML, Python dictionary or SQLite format.
+**This library is not supported for a long time and I am not going to support it in future. I doubt if it still works. Integrating JMeter with RF wasn't a good idea. Better use Locust instead of JMeter anyway.**
+
+~~This library provides simple way to integrate Robot Framework and JMeter. JTL output
+files can be analysed and converted to HTML, Python dictionary or SQLite format.~~
 
 On 19th of March 2017, project has been moved at Github. 
 
