@@ -217,7 +217,7 @@ class JMeterRunner(object):
     def listOtherParams(self):
         self.params = []
         if not self.paramsStr == "":
-            self.params = string.split(self.paramsStr)
+            self.params = str.split(self.paramsStr)
 
     def runAndPrintResult(self):
         import subprocess
