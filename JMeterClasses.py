@@ -758,7 +758,7 @@ class AggregatedSummary(object):
         return self.assertionPassRate
 
     def addAverageTime(self, t):
-        if isinstance(t, str) or isinstance(t, unicode):
+        if isinstance(t, str):
             t = int(t)
         self.averageTime += t
 
@@ -888,7 +888,7 @@ class AggregatedSamples(AggregatedSummary):
         return self.throughput
 
     def addAverageBytes(self, b):
-        if isinstance(b, str) or isinstance(b, unicode):
+        if isinstance(b, str):
             b = int(b)
         self.averageBytes = self.averageBytes + b
         self.addBytesPerSec(b)
@@ -1222,7 +1222,7 @@ class LogConverterHtml(object):
 
     def createHtml(self, disableReports):
         tableOfSamples = self.loganalyser.samples
-        if isinstance(disableReports, unicode):
+        if isinstance(disableReports, str):
             disableReports = int(disableReports)
         if not isinstance(disableReports, int):
             disableReports = 0
@@ -1887,7 +1887,7 @@ Website: http://sourceforge.net/projects/rf-jmeter-py/
         }
 
     def customizeNaviBar(self, reportOptions):
-        if isinstance(reportOptions, unicode):
+        if isinstance(reportOptions, str):
             reportOptions = int(reportOptions)
         if not isinstance(reportOptions, int):
             reportOptions = 0
